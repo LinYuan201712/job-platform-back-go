@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+datasource:
+  host: "127.0.0.1"
+  port: 3306
+  username: "root"
+  password: "sysu"
+  database: "job_platform_db"
+  charset: "utf8mb4"
+
+security:
+  secret: "dGhpc19pc19hX3NlY3VyZV9hbmRfbG9uZy1rZXkZm9yX2Rldg"
+  expiration_ms: 86400000
+
+app:
+  company_logo_dir: "uploads/company-logo"
+  student_avatar_dir: "uploads/student-avatar"
+  resume_dir: "uploads/resume"
+
