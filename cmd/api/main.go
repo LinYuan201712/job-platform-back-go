@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"job-platform-go/internal/config"
 	"job-platform-go/internal/controller"
+	"job-platform-go/internal/middleware"
 	"job-platform-go/pkg/database"
 	"log"
 
@@ -20,11 +21,19 @@ func main() {
 	// 初始化 Controller
 
 	authCtrl := controller.NewAuthController()
+	companyCtrl := controller.NewCompanyController()
 	authGroup := r.Group("/auth")
 	{
 		authGroup.POST("/login", authCtrl.Login)
 		authGroup.POST("/register", authCtrl.Register)
 	}
+	hrGroup := r.Group("/hr", middleware.JWTAuth())
+
+	{
+		hrGroup.GET("/company/profile", companyCtrl.GetProfile)
+		hrGroup.PUT("/company/profile", companyCtrl.UpdateProfile)
+	}
+
 	r.GET("/ping", func(c *gin.Context) {
 		sqlDB, err := database.DB.DB()
 		if err != nil {
