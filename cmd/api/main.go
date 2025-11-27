@@ -16,6 +16,8 @@ func main() {
 	config.InitConfig()
 	//2.连接数据库
 	database.InitDB()
+
+	database.AutoMigrate()
 	//3.初始化路由
 	r := gin.Default()
 	// 初始化 Controller
