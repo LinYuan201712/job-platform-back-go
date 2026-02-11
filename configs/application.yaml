@@ -6,7 +6,7 @@ datasource:
   port: 3306
   username: "root"
   password: "sysu"
-  database: "job_platform_db"
+  database: "job_db"
   charset: "utf8mb4"
 
 security:

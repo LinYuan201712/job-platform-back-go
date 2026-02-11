@@ -76,3 +76,51 @@ func (r *DictionaryRepository) GetScaleNameByID(id int) (string, error) {
 	}
 	return scale.Name, nil
 }
+
+// === Company Options ===
+// 使用 Pluck 只查某一列，减少内存消耗
+func (r *DictionaryRepository) GetIndustries() ([]string, error) {
+	var names []string
+	err := database.DB.Model(&entity.Industry{}).Order("id asc").Pluck("name", &names).Error
+	return names, err
+}
+
+func (r *DictionaryRepository) GetNatures() ([]string, error) {
+	var names []string
+	err := database.DB.Model(&entity.CompanyNature{}).Order("id asc").Pluck("name", &names).Error
+	return names, err
+}
+
+func (r *DictionaryRepository) GetScales() ([]string, error) {
+	var scales []string
+	err := database.DB.Model(&entity.CompanyScale{}).Order("id asc").Pluck("scale", &scales).Error
+	return scales, err
+}
+
+// === Tags ===
+// GetAllTagCategories获取所有的标签分类
+func (r *DictionaryRepository) GetAllTagCategories() ([]entity.TagCategory, error) {
+	var categories []entity.TagCategory
+	err := database.DB.Order("id asc").Find(&categories).Error
+	return categories, err
+}
+
+// GetAllTags获取所有的标签
+func (r *DictionaryRepository) GetAllTags() ([]entity.Tag, error) {
+	var tags []entity.Tag
+	err := database.DB.Order("id asc").Find(&tags).Error
+	return tags, err
+}
+
+// === Location ===
+func (r *DictionaryRepository) GetAllProvinces() ([]entity.Province, error) {
+	var provinces []entity.Province
+	err := database.DB.Order("id asc").Find(&provinces).Error
+	return provinces, err
+}
+
+func (r *DictionaryRepository) GetAllCities() ([]entity.City, error) {
+	var cities []entity.City
+	err := database.DB.Order("id asc").Find(&cities).Error
+	return cities, err
+}

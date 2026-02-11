@@ -30,3 +30,43 @@ type CompanyScale struct {
 func (CompanyScale) TableName() string {
 	return "t_company_scales"
 }
+
+// === 标签系统 (tag_categories, tags) ===
+type TagCategory struct {
+	ID   int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+func (TagCategory) TableName() string {
+	return "tag_categories"
+}
+
+type Tag struct {
+	ID         int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Name       string `json:"name"`
+	CategoryID int    `json:"category_id"`
+	CreatedBy  *int   `json:"created_by"` // 允许自定义标签
+}
+
+func (Tag) TableName() string {
+	return "tags"
+}
+
+// === 地理位置 (t_provinces, t_cities) ===
+type Province struct {
+	ID   int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	Code string `json:"code"`
+	Name string `json:"name"`
+}
+
+func (Province) TableName() string { return "t_provinces" }
+
+type City struct {
+	ID         int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	ProvinceID int    `json:"province_id"`
+	Code       string `json:"code"`
+	Name       string `json:"name"`
+}
+
+func (City) TableName() string { return "t_cities" }

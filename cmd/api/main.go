@@ -24,6 +24,8 @@ func main() {
 
 	authCtrl := controller.NewAuthController()
 	companyCtrl := controller.NewCompanyController()
+	commonCtrl := controller.NewCommonController()
+	hrJobCtrl := controller.NewHrJobController()
 	authGroup := r.Group("/auth")
 	{
 		authGroup.POST("/login", authCtrl.Login)
@@ -34,6 +36,14 @@ func main() {
 	{
 		hrGroup.GET("/company/profile", companyCtrl.GetProfile)
 		hrGroup.PUT("/company/profile", companyCtrl.UpdateProfile)
+		hrGroup.POST("/jobs", hrJobCtrl.CreateJob)
+		hrGroup.PUT("/jobs/:id", hrJobCtrl.UpdateJob)
+	}
+	// 通用接口
+	commonGroup := r.Group("/common", middleware.JWTAuth())
+	{
+		commonGroup.GET("/locations", commonCtrl.GetLocations)
+		commonGroup.GET("/tags", commonCtrl.GetAllTags)
 	}
 
 	r.GET("/ping", func(c *gin.Context) {

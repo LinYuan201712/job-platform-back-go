@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 	"job-platform-go/internal/model/entity"
 	"job-platform-go/pkg/database"
@@ -37,8 +38,11 @@ func (r *UserRepository) CreateUserWithRole(user *entity.User, roleStr string) e
 		}
 		//2.根据角色插入关联表
 		if roleStr == "student" {
+			// 修复：生成一个临时的唯一 student_id，防止冲突
+			// 这里简单用 "S" + UserID 作为学号
 			student := entity.Student{
-				UserID: user.ID,
+				UserID:    user.ID,
+				StudentID: fmt.Sprintf("S%d", user.ID),
 			}
 			if err := tx.Create(&student).Error; err != nil {
 				return err

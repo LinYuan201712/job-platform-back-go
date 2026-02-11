@@ -26,16 +26,17 @@ func (s *AuthService) Login(req dto.LoginReq) (*dto.LoginResp, error) {
 	if err != nil {
 		return nil, errors.New("邮箱未注册")
 	}
+
+	//3.校验密码
+	if err := utils.CheckPasswordHash(req.Password, user.PasswordHash); err != nil {
+		return nil, errors.New("密码错误")
+	}
 	//2.校验状态
 	if user.Status == entity.StatusDisabled {
 		return nil, errors.New("账号已禁用")
 	}
 	if user.Status == entity.StatusPending {
 		return nil, errors.New("账号审核中")
-	}
-	//3.校验密码
-	if err := utils.CheckPasswordHash(req.Password, user.PasswordHash); err != nil {
-		return nil, errors.New("密码错误")
 	}
 	//4.签发Token
 	roleStr := "student"

@@ -10,11 +10,13 @@ import (
 
 type CompanyController struct {
 	companyService *service.CompanyService
+	optionService  *service.CompanyOptionService
 }
 
 func NewCompanyController() *CompanyController {
 	return &CompanyController{
 		companyService: service.NewCompanyService(),
+		optionService:  service.NewCompanyOptionService(),
 	}
 }
 
@@ -52,4 +54,12 @@ func (ctrl *CompanyController) UpdateProfile(c *gin.Context) {
 	}
 	response.Success(c, nil)
 
+}
+func (ctrl *CompanyController) GetOptions(c *gin.Context) {
+	data, err := ctrl.optionService.GetCompanyOptions()
+	if err != nil {
+		response.Error(c, 500, "获取企业选项失败")
+		return
+	}
+	response.Success(c, data)
 }
